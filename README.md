@@ -1,3 +1,5 @@
+# This fork is just a quick hack to use CPU (breaks GPU). A good implementation would make `device` configurable and use `.to(device)` everywhere. Absolutely no support of any kind.
+
 # [CVPR 2020] 3D Photography using Context-aware Layered Depth Inpainting
 
 <p align='center'>
