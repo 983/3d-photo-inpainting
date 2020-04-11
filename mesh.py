@@ -25,6 +25,8 @@ import transforms3d
 import random
 from functools import reduce
 
+device = torch.device("cpu")
+
 def create_mesh(depth, image, int_mtx, config):
     H, W, C = image.shape
     ext_H, ext_W = H + 2 * config['extrapolation_thickness'], W + 2 * config['extrapolation_thickness']
@@ -1412,10 +1414,10 @@ def DL_inpaint_edge(mesh,
     edge_map = get_map_from_ccs(edge_ccs, mesh.graph['H'], mesh.graph['W'], mesh, edge_condition)
     np_depth, np_image = depth.copy(), image.copy()
     image_c = image.shape[-1]
-    image = torch.FloatTensor(image.transpose(2, 0, 1)).unsqueeze(0).cuda(config['gpu_ids'])
+    image = torch.FloatTensor(image.transpose(2, 0, 1)).unsqueeze(0).to(device)
     if depth.ndim < 3:
         depth = depth[..., None]
-    depth = torch.FloatTensor(depth.transpose(2, 0, 1)).unsqueeze(0).cuda(config['gpu_ids'])
+    depth = torch.FloatTensor(depth.transpose(2, 0, 1)).unsqueeze(0).to(device)
     mesh.graph['max_edge_id'] = len(edge_ccs)
     connnect_points_ccs = [set() for _ in range(len(edge_ccs))]
     gp_time, tmp_mesh_time, bilateral_time = 0, 0, 0
